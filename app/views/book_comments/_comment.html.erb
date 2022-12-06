@@ -1,23 +1,26 @@
-<table><% books.book_comments.each do |book_comment| %>
-
-   <tr>
-    <td>
-    <%= attachment_image_tag book_comment.user, :profile_image, format: 'jpeg',size: "50x50",fallback: "no_image.jpg" %><br>
-    <%=link_to user_path(books.user.id) do %><%= book_comment.user.name %><% end %></td>
-   
-    <td><%= book_comment.comment %></td>
-  <!--<% if book_comment.user == current_user %>　コメント削除のところ。-->
-    <td><%= link_to "Destroy", book_book_comment_path(book_comment.book, book_comment), method: :delete,remote: true,class:"btn btn-danger" %></td>
-
-  <% end %>
-  </tr>
-  <% end %>
-
- </table>
-
+<table>
+  <tbody>
+      <% books.book_comments.each do |book_comment| %>
+      <tr>
+        
+        <td>
+          <%= link_to user_path(book_comment.user) do %>
+            <%= image_tag book_comment.user.get_profile_image, size: "100x100" %><br>
+            <%= book_comment.user.name %>
+          <% end %>
+        </td>
+        <td><%= book_comment.comment %></td>
+        <td>
+          <% if book_comment.user == current_user %>
+            <%= link_to "Destroy", book_book_comment_path(books, book_comment), method: :delete, class: "btn btn-danger pull-right" %>
+          <% end %>
+        </td>
+      </tr>
+      <% end %>
+  </tbody>
+</table>
  <div class="form-group">
   <label for="newcomment">Comment</label>
-
 
 
  <%= form_with(model:[books, book_comment], local: true) do |f| %>
@@ -25,3 +28,4 @@
   <%= f.submit "送信する" %>
  <% end %>
  </div>
+ 
